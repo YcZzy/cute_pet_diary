@@ -1,0 +1,17 @@
+{
+	"miniprogramRoot": "client/dist/",
+	"projectname": "cute-pet-diary",
+	"description": "萌宠日记",
+	"appid": "wxa9298cd810ba0dc6",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false
+	},
+	"cloudfunctionRoot": "cloud/",
+	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {}
+}

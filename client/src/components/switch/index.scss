@@ -1,0 +1,30 @@
+.switch {
+  width: 120rpx;
+  height: 40rpx;
+  background-color: rgb(232,232,232);
+  display: flex;
+  justify-content: center;
+  border-radius: 25rpx;
+  position: relative;
+  at-icon {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+  .slide {
+    width: 65rpx;
+    height: 40rpx;
+    border-radius: 25rpx;
+    background-color: #f4ea2a;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: left 500ms ease;
+  }
+  .slide.right {
+    left: 55rpx;
+  }
+}

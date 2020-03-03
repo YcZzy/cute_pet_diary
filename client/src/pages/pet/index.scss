@@ -1,0 +1,26 @@
+.not-pets {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  image {
+    width: 200rpx;
+    height: 200rpx;
+  }
+  text {
+    margin-top: 20rpx;
+    font-size: 40rpx;
+    color: #dbdbdb;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+}
+
+.add-pet {
+  position: fixed;
+  bottom: 50rpx;
+  right: 60rpx;
+}

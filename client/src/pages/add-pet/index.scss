@@ -1,0 +1,101 @@
+.at-form {
+  background-color: rgb(245, 246, 248);
+}
+
+.part-common {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 20rpx;
+}
+
+.part1 {
+  margin-top: 0;
+  height: 250rpx;
+  .nickname {
+    text {
+      font-size: 25rpx;
+      color: #dbdbdb;
+    }
+    .at-input {
+      margin-left: 0;
+      padding: 0;
+    }
+  }
+  .variety {
+    text {
+      font-size: 25rpx;
+      color: #dbdbdb;
+    }
+    picker {
+      margin-top: 15rpx;
+    }
+    &-select {
+      height: 30rpx;
+      line-height: 30rpx;
+      display: flex;
+      justify-content: space-between;
+      text {
+        font-size: 32rpx;
+        color: #dbdbdb;
+      }
+      .active {
+        color: #000;
+      }
+    }
+  }
+}
+
+.part2 {
+  height: 150rpx;
+  .gender, .sterilization {
+    display: flex;
+    justify-content: space-between;
+    text {
+      font-size: 32rpx;
+    }
+  }
+  .sterilization {
+    margin-top: 20rpx;
+  }
+}
+
+.part3 {
+  height: 150rpx;
+  view:nth-child(2) {
+    margin-top: 20rpx;
+  }
+  .select {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.part4 {
+  display: flex;
+  align-items: center;
+  height: 220rpx;
+  text {
+    display: inline-block;
+    flex: 0 0 140rpx;
+  }
+  .at-image-picker {
+    display: flex;
+  }
+  .at-image-picker__flex-item {
+    width: 150rpx;
+    height: 150rpx;
+  }
+}
+
+.part5 {
+  margin-bottom: 20rpx;
+  text  {
+    font-size: 25rpx;
+    color: #dbdbdb;
+  }
+  .at-textarea {
+    margin-top: 10rpx;
+  }
+}

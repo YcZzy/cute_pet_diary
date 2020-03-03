@@ -1,0 +1,51 @@
+.islogin {
+  width: 100%;
+  &-header {
+    width: 100%;
+    height: 200rpx;
+    padding-top: 20rpx;
+    padding-bottom: 10rpx;
+    box-sizing: border-box;
+    background-color: #f4ea2a;
+    border-radius: 10rpx;
+    .user {
+      padding-left: 50rpx;
+      display: flex;
+      .avatar {
+        width: 80rpx;
+        height: 80rpx;
+        border-radius: 50%;
+        overflow: hidden;
+        image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      text {
+        line-height: 80rpx;
+        margin-left: 20rpx;
+        font-size: 40rpx;
+        font-weight: bold;
+        color: #fff;
+      }
+    }
+    .info {
+      display: flex;
+      margin-top: 20rpx;
+      &-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        .number {
+          font-size: 25rpx;
+          text-align: center;
+        }
+        text:nth-child(2) {
+          margin-top: 5rpx;
+          font-size: 20rpx;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
