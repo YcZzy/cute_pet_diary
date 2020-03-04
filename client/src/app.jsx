@@ -10,7 +10,7 @@ const store = configStore()
 class App extends Component {
   config = {
     pages: [
-      'pages/add-pet/index',
+      
       'pages/pet/index',
       'pages/mine/index',
       'pages/index/index',
@@ -21,7 +21,8 @@ class App extends Component {
       'pages/fans/index',
       'pages/focus/index',
       'pages/rar/index',
-      
+      'pages/add-pet/index',
+      'pages/pet-info/index',
     ],
     window: {
       backgroundTextStyle: 'light',

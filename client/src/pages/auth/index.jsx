@@ -5,19 +5,13 @@ import { AtIcon, AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import './index.scss'
 import { login } from '@actions/mine'
+import { navigateBack } from '@utils/common'
 
 @connect(() => ({}), (dispatch) => ({
   auth(e) {
     const user = e.detail.userInfo
     dispatch(login(user))
-    Taro.showToast({
-      title: '授权成功',
-      icon: 'success',
-      duration: 2000
-    })
-    setTimeout(() => {
-      Taro.navigateBack({ delta: 1 })
-    }, 2000)
+    navigateBack('授权成功')
   }
 }))
 class Auth extends Component {

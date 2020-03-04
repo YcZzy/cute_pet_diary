@@ -16,7 +16,6 @@ class Mine extends Component {
     navigationBarTitleText: '个人中心'
   }
   render() {
-    console.log(this.props)
     const { user } = this.props
     return (
       <View>

@@ -1,24 +1,33 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Picker, RichText } from '@tarojs/components'
+import { View, Text, Picker } from '@tarojs/components'
 import {
   AtButton,
   AtForm,
   AtImagePicker,
   AtTextarea,
   AtInput,
-  AtIcon
+  AtIcon,
+  AtMessage
 } from 'taro-ui'
-import { selector } from './config'
-import { debounce } from '@utils/common'
+import { selector, cloudPath } from './config'
+import { debounce, navigateBack, getYMD } from '@utils/common'
 import MySwitch from '@components/switch'
+import { cloudAdapter, upload } from '@utils/adapter'
+import { connect } from '@tarojs/redux'
+import * as createActions from '@actions/pet'
 import './index.scss'
 
+@connect(() => ({}), (dispatch) => ({
+  getPets() {
+    dispatch(createActions.getPets())
+  }
+}))
 class AddPet extends Component {
   state = {
     nickname: '',
-    variety: '请选择品种',
+    variety: '',
     gender: 0,
-    sterilization: 0,
+    sterilization: 1,
     birthday: '',
     arrival_date: '',
     avatarUrl: '',
@@ -35,25 +44,35 @@ class AddPet extends Component {
       [attr]: value
     })
   }
-  onSubmit = () => {
-    console.log()
+  onSubmit = async () => {
+    const { nickname, variety, birthday, gender, sterilization, arrival_date, files, lifestyle } = this.state
+    if (!nickname || !variety || !birthday || !arrival_date || !files.length || !lifestyle) {
+      Taro.atMessage({ 
+        message: '请填写完整信息',
+        type: 'warning'
+      })
+      return;
+    }
+    const avatarUrl = await upload(cloudPath, files)
+    if (!avatarUrl.length) {
+      Taro.atMessage({
+        message: '头像上传失败',
+        type: 'error',
+      })
+      return;
+    }
+    let pet = { nickname, variety, gender, sterilization, birthday, arrival_date, avatarUrl: avatarUrl[0], lifestyle }
+    const res = await cloudAdapter('pet', 'addPets', pet)
+    if (res.code === 0) {
+      // 直接返回并不会再次触发pet获取pets
+      this.props.getPets()
+      navigateBack('添加成功')
+    }
   }
   render() {
-    const {
-      nickname,
-      variety,
-      gender,
-      sterilization,
-      birthday,
-      arrival_date,
-      avatar_url,
-      files,
-      lifestyle
-    } = this.state
+    const { nickname, variety, birthday, arrival_date, files, lifestyle } = this.state
     return (
-      <AtForm
-        onSubmit={this.onSubmit}
-      >
+      <AtForm onSubmit={this.onSubmit}>
         <View className="part-common part1">
           <View className="nickname">
             <text>昵称</text>
@@ -81,7 +100,10 @@ class AddPet extends Component {
               }}
             >
               <View className="variety-select">
-                <Text className={variety !== '请选择品种' ? 'active' : ''}>{variety}</Text>
+                {
+                  variety ? <Text className="active">{variety}</Text>
+                    : <Text>请选择品种</Text>
+                }
                 <AtIcon value="chevron-right" size="20" color="#ccc" />
               </View>
             </Picker>
@@ -104,8 +126,8 @@ class AddPet extends Component {
           <View className="sterilization">
             <Text>绝育</Text>
             <MySwitch
-              leftIconValue="check"
-              rightIconValue="close"
+              leftIconValue="close"
+              rightIconValue="check"
               color="#fff"
               size="10"
               onChange={(value) => {
@@ -118,6 +140,7 @@ class AddPet extends Component {
           <View>
             <Picker
               mode='date'
+              end={getYMD()} // 限制最大能取得日期
               onChange={(e) => {
                 this.onChange('birthday', e.detail.value)
               }}
@@ -135,6 +158,7 @@ class AddPet extends Component {
           <View>
             <Picker
               mode='date'
+              end={getYMD()}
               onChange={(e) => {
                 this.onChange('arrival_date', e.detail.value)
               }}
@@ -168,7 +192,6 @@ class AddPet extends Component {
           <AtTextarea
             value={lifestyle}
             onChange={(e) => {
-              console.log(e)
               this.handleChange('lifestyle', e.detail.value)
             }}
             maxLength={200}
@@ -176,6 +199,7 @@ class AddPet extends Component {
           />
         </View>
         <AtButton formType='submit' type="primary" circle>提交</AtButton>
+        <AtMessage />
       </AtForm>
     )
   }

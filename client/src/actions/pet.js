@@ -7,7 +7,10 @@ export function getPets () {
     if (res.code === 0) {
       dispatch({
         type: GETPETS,
-        payload: res.data
+        payload: {
+          pets: res.data,
+          loading: false
+        }
       })
     }
   }

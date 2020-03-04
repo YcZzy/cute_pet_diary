@@ -1,7 +1,8 @@
 import { GETPETS } from '../constants/pet'
 
 const initialState = {
-  pets: []
+  pets: [],
+  loading: true
 }
 
 export default function Reducer (state = initialState, action) {
@@ -10,7 +11,7 @@ export default function Reducer (state = initialState, action) {
     case GETPETS:
       return {
         ...state,
-        pets: payload
+        ...payload
       }
     default:
       return state

@@ -19,6 +19,20 @@
   }
 }
 
+.pet-card {
+  margin-top: 40rpx;
+}
+.pet-card:nth-child(1) {
+  margin-top: 10rpx;
+}
+
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .add-pet {
   position: fixed;
   bottom: 50rpx;

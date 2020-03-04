@@ -4,7 +4,8 @@ import './index.scss'
 import { View } from "@tarojs/components";
 
 function Switch(props) {
-  const [index, setIndex] = useState(0)
+  let init = props.value ? props.value : 0
+  const [index, setIndex] = useState(init)
   let leftIconAttr = {
     value: props.leftIconValue,
     color: props.color,
@@ -36,4 +37,4 @@ function Switch(props) {
   )
 }
 
-export default memo(Switch)
+export default Switch
