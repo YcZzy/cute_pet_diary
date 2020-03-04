@@ -1,2 +1,4 @@
 # cute_pet_diary
-taro 萌宠日记
+## 技术栈
+小程序端：taro，taro-ui，redux
+后台：小程序云函数，tac-router
