@@ -1,7 +1,7 @@
-import { AtIcon } from "taro-ui";
-import { useState, memo } from '@tarojs/taro'
+import { AtIcon } from "taro-ui"
+import { useState } from '@tarojs/taro'
+import { View } from "@tarojs/components"
 import './index.scss'
-import { View } from "@tarojs/components";
 
 function Switch(props) {
   let init = props.value ? props.value : 0
