@@ -47,7 +47,7 @@ function Card (props) {
               prefixClass="icon" 
               value={sterilization ? 'checked' : 'check'} 
               size="15"
-              color={sterilization ? '#f4ea2a' : '#dbdbdb'}
+              color={sterilization ? '#fdd730' : '#dbdbdb'}
             />
             <Text>{sterilization ? '已' : '未'}绝育</Text>
           </View>

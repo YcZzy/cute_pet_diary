@@ -56,7 +56,7 @@ class Pet extends Component {
             ) : null
         }
         <View className="add-pet" onClick={() => navigateTo('/pages/add-pet/index')}>
-          <AtIcon prefixClass="icon" value="add-pet" size="30" color="#f4ea2a" />
+          <AtIcon prefixClass="icon" value="add-pet" size="30" color="#fdd730" />
         </View>
       </View>
     )

@@ -57,7 +57,7 @@ class App extends Component {
           "text": "我的"
         }
       ],
-      "selectedColor": "#f4ea2a"
+      "selectedColor": "#fdd730"
     },
   }
 

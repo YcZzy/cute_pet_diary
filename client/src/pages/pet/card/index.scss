@@ -57,7 +57,7 @@
       .countdown {
         margin-left: 10rpx;
         .num {
-          color: #f4ea2a;
+          color: #fdd730;
         }
       }
     }
@@ -69,7 +69,7 @@
     width: 160rpx;
     height: 40rpx;
     display: flex;
-    background: linear-gradient(125deg, #f4ea2a, #f4ea2a 50%, #000 50%, #000);
+    background: linear-gradient(125deg, #fdd730, #fdd730 50%, #000 50%, #000);
     border-radius: 20rpx;
     text {
       flex: 1;
@@ -82,7 +82,7 @@
       color: #000;
     }
     text:nth-child(2) {
-      color: #f4ea2a;
+      color: #fdd730;
     }
   }
 }

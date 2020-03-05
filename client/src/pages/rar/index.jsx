@@ -9,7 +9,7 @@ function Rar () {
 }
 
 Rar.config = {
-  navigationBarBackgroundColor: '#f4ea2a',
+  navigationBarBackgroundColor: '#fdd730',
   navigationBarTitleText: '提醒记录'
 }
 
