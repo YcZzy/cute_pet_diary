@@ -1,0 +1,75 @@
+.at-form {
+  background-color: #f5f6f8;
+}
+
+.part-common {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 20rpx;
+}
+
+.part1 {
+  margin-top: 0;
+  height: 140rpx;
+  text {
+    font-size: 25rpx;
+    color: #dbdbdb;
+  }
+  &-select {
+    height: 50rpx;
+    line-height: 50rpx;
+    display: flex;
+    justify-content: space-between;
+    text {
+      font-size: 30rpx;
+      color: #dbdbdb;
+    }
+    .active {
+      font-size: 27rpx;
+      font-weight: 600;
+      color: #000;
+    }
+  }
+}
+
+.part2 {
+  .next-time, .cycle {
+    text {
+      font-size: 25rpx;
+      color: #dbdbdb;
+    }
+    picker {
+      margin-top: 10rpx;
+    }
+    &-select {
+      height: 50rpx;
+      line-height: 50rpx;
+      display: flex;
+      justify-content: space-between;
+      text {
+        font-size: 30rpx;
+        color: #dbdbdb;
+      }
+      .active {
+        font-size: 27rpx;
+        font-weight: 600;
+        color: #000;
+      }
+    }
+  }
+}
+
+.part3 {
+  margin-bottom: 20rpx;
+  text  {
+    font-size: 25rpx;
+    color: #dbdbdb;
+  }
+  .at-textarea {
+    margin-top: 10rpx;
+    padding: 0;
+    border: none;
+  }
+}
