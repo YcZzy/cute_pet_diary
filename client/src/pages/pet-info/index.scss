@@ -88,11 +88,11 @@
         color: #dbdbdb;
       }
       picker {
-        margin-top: 15rpx;
+        margin-top: 10rpx;
       }
       &-select {
-        height: 30rpx;
-        line-height: 30rpx;
+        height: 35rpx;
+        line-height: 35rpx;
         display: flex;
         justify-content: space-between;
         text {
@@ -139,6 +139,8 @@
     }
     .at-textarea {
       margin-top: 10rpx;
+      padding: 0;
+      border: none;
     }
   }
 }
