@@ -1,0 +1,89 @@
+page {
+  padding: 0;
+  .rar {
+    &-header {
+      width: 100%;
+      height: 250rpx;
+      padding: 20rpx;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #fdd730;
+      border-bottom-left-radius: 25rpx;
+      border-bottom-right-radius: 25rpx;
+      &-left {
+        flex: 1;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text {
+          color: #000;
+        }
+        .nickname {
+          font-weight: 600;
+          font-size: 50rpx;
+        }
+        text:nth-child(2) {
+          font-size: 32rpx;
+          font-weight: 600;
+        }
+        .num {
+          padding: 0 5rpx 5rpx 0;
+          color: #1296db;
+        }
+      }
+      &-right {
+        width: 120rpx;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        .avatar {
+          width: 90rpx;
+          height: 90rpx;
+          border-radius: 50%;
+          overflow: hidden;
+          border: 10rpx solid #fff;
+          image {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+    &-content {
+      padding: 60rpx 25rpx 25rpx 25rpx;
+      box-sizing: border-box;
+      .tab {
+        text {
+          font-size: 25rpx;
+          color: #ccc;
+        }
+        text:nth-child(2) {
+          margin-left: 20rpx;
+        }
+        text.active {
+          font-size: 32rpx;
+          color: #000;
+          font-weight: 600;
+        }
+      }
+    }
+    &-oper {
+      position: fixed;
+      bottom: 50rpx;
+      right: 40rpx;
+      width: 130rpx;
+      height: 60rpx;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      View {
+        width: 60rpx;
+        height: 60rpx;
+        text-align: center;
+      }
+    }
+  }
+}
