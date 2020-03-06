@@ -60,6 +60,9 @@
   }
   .at-form {
     background-color: #f5f6f8;
+    &::after {
+      border: none;
+    }
   }
   
   .part-common {

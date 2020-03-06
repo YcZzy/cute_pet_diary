@@ -11,14 +11,20 @@ import {
 import { debounce, navigateBack, getYMD } from '@utils/common'
 import { cloudAdapter, upload, deleteFiles } from '@utils/adapter'
 import MySwitch from '@components/switch'
-import { selector, cloudPath } from './config'
+import { pet_avatar } from '@config'
 import { connect } from '@tarojs/redux'
 import * as createActions from '@actions/pet'
+import { initVariety } from '@actions/config'
 import './index.scss'
 
-@connect(() => ({}), (dispatch) => ({
+@connect(({ config }) => ({
+  selector: config.variety
+}), (dispatch) => ({
   getPets() {
     dispatch(createActions.getPets())
+  },
+  getSelector() {
+    dispatch(initVariety())
   }
 }))
 class PetInfo extends PureComponent {
@@ -35,16 +41,14 @@ class PetInfo extends PureComponent {
       ...pet
     })
   }
-  handleChange = debounce((attr, value) => {
+  componentDidMount() {
+    this.props.getSelector()
+  }
+  onChange = debounce((attr, value) => {
     this.setState({
       [attr]: value
     })
   })
-  onChange = (attr, value) => {
-    this.setState({
-      [attr]: value
-    })
-  }
   chooseImage = async () => {
     const res = await Taro.chooseImage({  count: 1 })
     // console.log(res)
@@ -73,7 +77,7 @@ class PetInfo extends PureComponent {
         })
         return;
       }
-      avatarID = await upload(cloudPath, files)
+      avatarID = await upload(pet_avatar, files)
       if (!avatarID.length) {
         Taro.atMessage({
           message: '头像上传失败',
@@ -102,6 +106,7 @@ class PetInfo extends PureComponent {
       variety,
       lifestyle
     } = this.state
+    const { selector } = this.props
 
     return (
       <View className="pet-info">
@@ -157,7 +162,7 @@ class PetInfo extends PureComponent {
                 value={nickname}
                 onChange={(value) => {
                   console.log(value)
-                  this.handleChange('nickname', value)
+                  this.onChange('nickname', value)
                 }}
               />
             </View>
@@ -165,10 +170,10 @@ class PetInfo extends PureComponent {
               <text>品种</text>
               <Picker
                 mode='selector'
-                rangeKey="key"
+                rangeKey="value"
                 range={selector}
                 onChange={(e) => {
-                  this.onChange('variety', selector[e.detail.value].key)
+                  this.onChange('variety', selector[e.detail.value].value)
                 }}
               >
                 <View className="variety-select">
@@ -253,7 +258,7 @@ class PetInfo extends PureComponent {
             <AtTextarea
               value={lifestyle}
               onChange={(e) => {
-                this.handleChange('lifestyle', e.detail.value)
+                this.onChange('lifestyle', e.detail.value)
               }}
               maxLength={200}
               placeholder='您爱宠的生活方式是...'
