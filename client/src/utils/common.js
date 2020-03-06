@@ -44,11 +44,13 @@ export const isLeapY = (year) => {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
 }
 
-export const computedFromBirthday = (birthday) => {
-  const arr = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] // 每月天数
-  let nowM = new Date().getMonth() + 1
-  let nowY = new Date().getFullYear()
-  let nowD = new Date().getDate()
+const arr = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] // 每月天数
+
+export const computeFromBirthday = (birthday) => {
+  const date = new Date()
+  let nowM = date.getMonth() + 1
+  let nowY = date.getFullYear()
+  let nowD = date.getDate()
 
   if (!birthday) birthday = getYMD()
   let barr = birthday.split('-').map(item => Number(item))
@@ -101,4 +103,48 @@ export const computedFromBirthday = (birthday) => {
     countdown,
     ymd
   }
+}
+
+export const computeFromArrivalDate = (arrival_date) => {
+  if (!arrival_date) return 0;
+  let [arrY, arrM, arrD] = arrival_date.split('-').map(item => Number(item))
+  let [nowY, nowM, nowD] = getYMD().split('-').map(item => Number(item))
+  let sumDays = 0
+  if (arrY === nowY) {
+    if (nowD < arrD) {
+      sumDays = arr[nowM - 1] + nowD - arrD
+      if(nowM = 3 && isLeapY(nowY)) sumDays += 1
+      nowM -= 1
+    }else {
+      sumDays = nowD - arrD
+    }
+
+    if (nowM > arrM) {
+      for(let i = arrM; i < nowM; i++) sumDays += arr[i]
+      if (isLeapY[nowY] && nowM > 2) sumDays += 1
+    }
+  }
+  if (arrY < nowY) {
+    for(let i = arrY + 1; i < nowY; i++) {
+      if (isLeapY(i)) {
+        sumDays += 366
+      }else {
+        sumDays += 365
+      }
+    }
+    // 到达之年部分
+    const arrFlag = isLeapY(arrY)
+    for(let i = arrM + 1; i <= 12; i++) sumDays += arr[i]
+    if (arrM === 1 && arrFlag) sumDays += 1
+    sumDays += arr[arrM] - arrD
+    if (arrM === 2 && arrFlag) sumDays += 1
+
+    // 今年部分
+    const nowFlag = isLeapY(nowY)
+    for(let i = 1; i < nowM; i++) sumDays += arr[i]
+    if (nowM > 2 && nowFlag) sumDays += 1
+    sumDays += arr[nowM] - nowD
+    if (nowM === 2 && nowFlag) sumDays += 1
+  }
+  return sumDays
 }

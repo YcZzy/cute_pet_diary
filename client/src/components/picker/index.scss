@@ -1,3 +1,5 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+
 .curtain {
   position: fixed;
   left: 0;
@@ -6,4 +8,46 @@
   right: 0;
   z-index: 3;
   background-color: rgba(0,0,0,.5);
+}
+
+.rar {
+  margin-top: 40rpx; 
+  .scrollview {
+    overflow-y: auto;
+    height: 350rpx;
+    &::-webkit-scrollbar{
+      width: 0;
+      height: 0;
+      color: transparent;
+    }
+    .item {
+      color: #dbdbdb;
+      text-align: center;
+      background-color: #f2f1f7;
+      font-size: 26rpx;
+      line-height: 80rpx;
+      height: 80rpx;
+      border-radius: 10rpx;
+      margin-bottom: 20rpx;
+      &.active {
+        color: #fff;
+        background-color: #f4ea2a;
+      }
+    }
+  }
+  .self {
+    margin-top: 10rpx;
+    text {
+      display: inline-block;
+      height: 50rpx;
+      line-height: 50rpx;
+      font-size: 25rpx;
+      font-weight: 600;
+      color: #000;
+    }
+    view {
+      margin-left: 0;
+      padding: 0;
+    }
+  }
 }

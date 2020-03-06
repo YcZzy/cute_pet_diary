@@ -1,5 +1,8 @@
 .at-form {
   background-color: #f5f6f8;
+  &::after {
+    border: none;
+  }
 }
 
 .part-common {
@@ -26,10 +29,19 @@
       font-size: 30rpx;
       color: #dbdbdb;
     }
-    .active {
-      font-size: 27rpx;
-      font-weight: 600;
-      color: #000;
+    view {
+      display: flex;
+      align-items: center;
+      image {
+        width: 50rpx;
+        height: 50rpx;
+      }
+      .active {
+        margin-left: 10rpx;
+        font-size: 27rpx;
+        font-weight: 600;
+        color: #000;
+      }
     }
   }
 }

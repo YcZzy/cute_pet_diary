@@ -15,14 +15,13 @@ exports.main = async (event, context) => {
     const pets = await getPets(db, openId)
     ctx.body = { code: 0, data: pets } // 将数据返回给云函数，用ctx.body
     await next()
-  });
+  })
 
   app.router(['addPets', 'updatePets'], async (ctx, next) => {
-    const { openId } = event.userInfo
-    let pet = event.params
-    pet.openId = openId
-    let res
+    let pet = event.params, res
     if (!pet._id) {
+      const { openId } = event.userInfo
+      pet.openId = openId
       res = await addPets(db, pet)
     }else {
       res = await updatePets(db, pet)

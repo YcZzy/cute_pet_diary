@@ -1,44 +1,100 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Picker } from '@tarojs/components'
-import {
-  AtButton,
-  AtForm,
-  AtTextarea,
-  AtMessage,
-  AtIcon
-} from 'taro-ui'
+import { View, Text, Image, Picker } from '@tarojs/components'
+import { AtButton, AtForm, AtTextarea, AtMessage, AtIcon } from 'taro-ui'
 import { debounce, navigateBack, getYMD } from '@utils/common'
 import MyPicker from '@components/picker'
-import { selector, cycles } from './config'
+import { connect } from '@tarojs/redux'
+import { initRarReminder } from '@actions/config'
+import { reminder_default_img } from '@config'
+import { cloudAdapter } from '@utils/adapter'
+import { getReminders } from '@actions/rar'
 import './index.scss'
 
+@connect(({ config }) => ({
+  selector: config.plan,
+  cycles: config.cycles
+}), (dispatch) => ({
+  getConfig() {
+    dispatch(initRarReminder())
+  },
+  getReminders(petId) {
+    dispatch(getReminders(petId))
+  }
+}))
 class AddReminder extends Component {
   config = {
     navigationBarTitleText: '添加提醒计划'
   }
   state = {
+    petId: '',
     plan: '',
     nextTime: '',
     cycle: '',
-    note: ''
+    note: '',
+    img: ''
+  }
+  componentWillMount() {
+    const { petId } = this.$router.params
+    this.setState({ petId })
+  }
+  componentDidMount() {
+    this.props.getConfig()
   }
   onChange = debounce((attr, value) => {
     this.setState({
       [attr]: value
     })
   })
-  onSubmit = () => {
-
+  getPlanImg = (plan) => {
+    const pItem = this.props.selector.filter(item => item.value === plan)
+    let img = pItem.length ? pItem[0].img : reminder_default_img
+    this.setState({ img })
+    return img
+  }
+  onSubmit = async () => {
+    const { petId, plan, nextTime, cycle, note, img } = this.state
+    if (!plan) {
+      Taro.atMessage({
+        message: '请选择提醒事项',
+        type: 'error',
+      })
+      return;
+    }
+    if (!nextTime) {
+      Taro.atMessage({
+        message: '请选择提醒时间',
+        type: 'error',
+      })
+      return;
+    }
+    if (!cycle) {
+      Taro.atMessage({
+        message: '请选择重复周期',
+        type: 'error',
+      })
+      return;
+    }
+    let reminder = { petId, plan, nextTime, cycle, note, img }
+    const res = await cloudAdapter('rar', 'addReminder', reminder)
+    console.log(res)
+    if (res.code === 0) {
+      // 直接返回并不会再次触发pet获取pets
+      this.props.getReminders(petId)
+      navigateBack('添加成功')
+    }
   }
 
   render() {
     const { plan, nextTime, cycle, note } = this.state
+    const { selector, cycles } = this.props
+    
     return (
       <AtForm onSubmit={this.onSubmit}>
         <View className="part1 part-common">
           <text>计划名称</text>
           <MyPicker
             title="提醒事项"
+            mode="rar"
             selector={selector}
             onChange={(value) => {
               this.onChange('plan', value)
@@ -46,8 +102,12 @@ class AddReminder extends Component {
           >
             <View className="part1-select">
               {
-                plan ? <Text className="active">{plan}</Text>
-                  : <Text>选择提醒事项</Text>
+                plan ? (
+                  <View>
+                    <Image src={this.getPlanImg(plan)} />
+                    <Text className="active">{plan}</Text>
+                  </View>
+                ) : <Text>选择提醒事项</Text>
               }
               <AtIcon value="chevron-right" size="20" color="#ccc" />
             </View>
@@ -56,11 +116,11 @@ class AddReminder extends Component {
         <View className="part2 part-common">
           <View className="next-time">
             <text>提醒时间</text>
-            <Picker
+            <MyPicker
+              title="提醒时间"
               mode='date'
-              end={getYMD()} // 限制最大能取得日期
-              onChange={(e) => {
-                this.onChange('nextTime', e.detail.value)
+              onChange={(value) => {
+                this.onChange('nextTime', value)
               }}
             >
               <View className="next-time-select">
@@ -70,7 +130,7 @@ class AddReminder extends Component {
                 }
                 <AtIcon value="chevron-right" size="20" color="#ccc" />
               </View>
-            </Picker>
+            </MyPicker>
           </View>
           <View className="cycle">
             <text>重复周期</text>

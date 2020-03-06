@@ -1,0 +1,2 @@
+export const INIT_VARIETY = 'INIT_VARIETY'
+export const INIT_RAR_REMINDER = 'INIT_RAR_REMINDER'
