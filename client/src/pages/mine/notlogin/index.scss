@@ -1,6 +1,6 @@
 .notlogin {
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 40rpx);
   border-radius: 20rpx;
   position: relative;
   &-bg {
