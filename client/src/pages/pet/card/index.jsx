@@ -1,7 +1,7 @@
 import { memo } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
-import { computedFromBirthday, navigateTo } from '@utils/common'
+import { computeFromBirthday, navigateTo } from '@utils/common'
 import './index.scss'
 
 function Card (props) {
@@ -13,7 +13,7 @@ function Card (props) {
     sterilization,
     variety
   } = props.petInfo
-  const { countdown, ymd } = computedFromBirthday(birthday)
+  const { countdown, ymd } = computeFromBirthday(birthday)
   return (
     <View
       className="card"
@@ -27,7 +27,7 @@ function Card (props) {
         backgroundColor: '#fff'
       }}
       onClick={() => {
-        navigateTo(`/pages/pet-info/index?pet=${JSON.stringify(props.petInfo)}`)
+        navigateTo('/pages/pet-info/index?pet=' + JSON.stringify(props.petInfo))
       }}
     >
       <View className="card-info">
@@ -72,7 +72,7 @@ function Card (props) {
         className="card-oper" 
         onClick={(e) => {
           e.stopPropagation()
-          navigateTo('/pages/rar/index')
+          navigateTo('/pages/rar/index?pet=' + JSON.stringify(props.petInfo))
         }}
       >
         <Text>+ 提醒</Text>
