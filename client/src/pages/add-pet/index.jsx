@@ -9,17 +9,23 @@ import {
   AtIcon,
   AtMessage
 } from 'taro-ui'
-import { selector, cloudPath } from './config'
+import { pet_avatar } from '@config'
 import { debounce, navigateBack, getYMD } from '@utils/common'
 import MySwitch from '@components/switch'
 import { cloudAdapter, upload } from '@utils/adapter'
 import { connect } from '@tarojs/redux'
 import * as createActions from '@actions/pet'
+import { initVariety } from '@actions/config'
 import './index.scss'
 
-@connect(() => ({}), (dispatch) => ({
+@connect(({ config }) => ({
+  selector: config.variety
+}), (dispatch) => ({
   getPets() {
     dispatch(createActions.getPets())
+  },
+  getSelector() {
+    dispatch(initVariety())
   }
 }))
 class AddPet extends Component {
@@ -34,16 +40,14 @@ class AddPet extends Component {
     files: [],
     lifestyle: ''
   }
-  handleChange = debounce((attr, value) => {
+  componentDidMount() {
+    this.props.getSelector() // 获取品种配置
+  }
+  onChange = debounce((attr, value) => {
     this.setState({
       [attr]: value
     })
   })
-  onChange = (attr, value) => {
-    this.setState({
-      [attr]: value
-    })
-  }
   onSubmit = async () => {
     const { nickname, variety, birthday, gender, sterilization, arrival_date, files, lifestyle } = this.state
     if (!nickname || !variety || !birthday || !arrival_date || !files.length || !lifestyle) {
@@ -53,7 +57,7 @@ class AddPet extends Component {
       })
       return;
     }
-    const avatarUrl = await upload(cloudPath, files)
+    const avatarUrl = await upload(pet_avatar, files)
     if (!avatarUrl.length) {
       Taro.atMessage({
         message: '头像上传失败',
@@ -71,6 +75,8 @@ class AddPet extends Component {
   }
   render() {
     const { nickname, variety, birthday, arrival_date, files, lifestyle } = this.state
+    const { selector } = this.props
+
     return (
       <AtForm onSubmit={this.onSubmit}>
         <View className="part-common part1">
@@ -85,7 +91,7 @@ class AddPet extends Component {
               placeholderStyle="color: #dbdbdb"
               value={nickname}
               onChange={(value) => {
-                this.handleChange('nickname', value)
+                this.onChange('nickname', value)
               }}
             />
           </View>
@@ -93,10 +99,10 @@ class AddPet extends Component {
             <text>品种</text>
             <Picker
               mode='selector'
-              rangeKey="key"
+              rangeKey="value"
               range={selector}
               onChange={(e) => {
-                this.onChange('variety', selector[e.detail.value].key)
+                this.onChange('variety', selector[e.detail.value].value)
               }}
             >
               <View className="variety-select">
@@ -192,7 +198,7 @@ class AddPet extends Component {
           <AtTextarea
             value={lifestyle}
             onChange={(e) => {
-              this.handleChange('lifestyle', e.detail.value)
+              this.onChange('lifestyle', e.detail.value)
             }}
             maxLength={200}
             placeholder='您爱宠的生活方式是...'
