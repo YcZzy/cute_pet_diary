@@ -5,13 +5,8 @@ import { AtIcon } from "taro-ui"
 import MyPickerGroup from './picker-group'
 
 class MyPicker extends Component {
-  constructor(props) {
-    this.state = {
-      isOpened: false,
-      title: props.title || '',
-      selector: props.selector,
-      onChange: props.onChange
-    }
+  state = {
+    isOpened: false
   }
   onClose = () => {
     this.setState({
@@ -19,7 +14,9 @@ class MyPicker extends Component {
     })
   }
   render() {
-    const { title, isOpened, selector, onChange } = this.state
+    const { isOpened } = this.state
+    const { title, selector, onChange } = this.props
+
     return (
       <View>
         <View
