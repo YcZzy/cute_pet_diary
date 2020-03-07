@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, PickerView, PickerViewColumn } from '@tarojs/components'
-import { debounce } from '@utils/common'
 import { init } from '@components/picker/date'
 
 class MyPickerView extends Component {
@@ -15,11 +14,11 @@ class MyPickerView extends Component {
       hours: hours,
       minutes: minutes,
       value: [ // 当前项下标数组
-        0, 0, 0, 0, 0 
-        // months.findIndex(m => m === date.getMonth() + 1),
-        // days.findIndex(d => d === date.getDate()),
-        // hours.findIndex(h => h === date.getHours()),
-        // minutes.findIndex(m => m === date.getMinutes())
+        0,
+        months.findIndex(m => m === date.getMonth() + 1),
+        days.findIndex(d => d === date.getDate()),
+        hours.findIndex(h => h === date.getHours()),
+        minutes.findIndex(m => m === date.getMinutes())
       ]
     }
   }
