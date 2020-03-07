@@ -1,4 +1,4 @@
-import { INIT_VARIETY, INIT_RAR_REMINDER } from '../constants/config'
+import { INIT_VARIETY, INIT_RAR_REMINDER, INIT_RAR_RECORD } from '../constants/config'
 import { cloudAdapter } from '@utils/adapter'
 
 export function initVariety () {
@@ -24,6 +24,20 @@ export function initRarReminder() {
         payload: {
           plan: res.data.plan,
           cycles: res.data.cycles
+        }
+      })
+    }
+  }
+}
+
+export function initRarRecord() {
+  return async (dispatch) => {
+    const res = await cloudAdapter('config', 'initRarRecord')
+    if (res.code === 0) {
+      dispatch({
+        type: INIT_RAR_RECORD,
+        payload: {
+          record: res.data
         }
       })
     }

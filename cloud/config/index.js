@@ -1,7 +1,7 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
 const TcbRouter = require('tcb-router')
-const { initVariety, initRarReminder } = require('./db')
+const { initVariety, initRarReminder, initRarRecord } = require('./db')
 
 cloud.init()
 
@@ -18,6 +18,12 @@ exports.main = async (event, context) => {
 
   app.router('initRarReminder', async (ctx, next) => {
     const res = await initRarReminder(db)
+    ctx.body = { code: 0, data: res }
+    await next()
+  })
+
+  app.router('initRarRecord', async (ctx, next) => {
+    const res = await initRarRecord(db)
     ctx.body = { code: 0, data: res }
     await next()
   })

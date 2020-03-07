@@ -1,7 +1,8 @@
-import { GET_REMINDERS } from '../constants/rar'
+import { GET_REMINDERS, GET_RECORDS } from '../constants/rar'
 
 const initialState = {
   reminders: [],
+  records: [],
   loading: true
 }
 
@@ -10,6 +11,11 @@ export default function Reducer (state = initialState, action) {
   switch(type) {
     case GET_REMINDERS:
       return {
+        ...state,
+        ...payload
+      }
+    case GET_RECORDS:
+      return { // 返回的对象是新的state
         ...state,
         ...payload
       }

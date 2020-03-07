@@ -1,9 +1,10 @@
-import { INIT_VARIETY, INIT_RAR_REMINDER } from '../constants/config'
+import { INIT_VARIETY, INIT_RAR_REMINDER, INIT_RAR_RECORD } from '../constants/config'
 
 const initialState = {
   variety: [],
   plan: [],
-  cycles: []
+  cycles: [],
+  record: []
 }
 
 export default function Reducer (state = initialState, action) {
@@ -15,6 +16,11 @@ export default function Reducer (state = initialState, action) {
         ...payload
       }
     case INIT_RAR_REMINDER:
+      return {
+        ...state,
+        ...payload
+      }
+    case INIT_RAR_RECORD:
       return {
         ...state,
         ...payload
