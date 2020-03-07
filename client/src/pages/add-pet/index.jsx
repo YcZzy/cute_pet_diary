@@ -15,7 +15,6 @@ import MySwitch from '@components/switch'
 import { cloudAdapter, upload } from '@utils/adapter'
 import { connect } from '@tarojs/redux'
 import * as createActions from '@actions/pet'
-import { initVariety } from '@actions/config'
 import './index.scss'
 
 @connect(({ config }) => ({
@@ -23,9 +22,6 @@ import './index.scss'
 }), (dispatch) => ({
   getPets() {
     dispatch(createActions.getPets())
-  },
-  getSelector() {
-    dispatch(initVariety())
   }
 }))
 class AddPet extends Component {
@@ -39,9 +35,6 @@ class AddPet extends Component {
     avatarUrl: '',
     files: [],
     lifestyle: ''
-  }
-  componentDidMount() {
-    this.props.getSelector() // 获取品种配置
   }
   onChange = debounce((attr, value) => {
     this.setState({
