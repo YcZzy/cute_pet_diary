@@ -186,9 +186,8 @@ class AddPet extends Component {
               count={1}
               length={1}
               files={files}
-              showAddBtn={true}
+              showAddBtn={!files.length}
               onChange={(files) => {
-                if (files.length > 1) files.shift()
                 this.onChange('files', files)
               }}
             />
