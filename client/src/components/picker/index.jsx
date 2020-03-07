@@ -25,9 +25,12 @@ class MyPicker extends Component {
   }
   rarConfirm = () => {
     const { rar_index, value } = this.state
-    const { onChange, selector } = this.props
     if (rar_index === -1 && !value.length) return;
-    rar_index !== -1 ? onChange(selector[rar_index].value) : onChange(value)
+    let res = {
+      index: rar_index,
+      value
+    }
+    this.props.onChange(res)
     this.onClose()
   }
 
@@ -93,7 +96,7 @@ class MyPicker extends Component {
                     type='text'
                     placeholderStyle="color: #dbdbdb; font-size: 28rpx"
                     value={value}
-                    placeholder='在此输入自定义提醒事项'
+                    placeholder={`在此输入自定义的${title}`}
                     onChange={debounce((value) => this.setState({ value }))}
                   />
                 </View>
