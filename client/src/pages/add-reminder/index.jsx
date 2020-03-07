@@ -1,10 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Picker } from '@tarojs/components'
 import { AtButton, AtForm, AtTextarea, AtMessage, AtIcon } from 'taro-ui'
-import { debounce, navigateBack, getYMD } from '@utils/common'
+import { debounce, navigateBack } from '@utils/common'
 import MyPicker from '@components/picker'
 import { connect } from '@tarojs/redux'
-import { initRarReminder } from '@actions/config'
 import { reminder_default_img } from '@config'
 import { cloudAdapter } from '@utils/adapter'
 import { getReminders } from '@actions/rar'
@@ -14,9 +13,6 @@ import './index.scss'
   selector: config.plan,
   cycles: config.cycles
 }), (dispatch) => ({
-  getConfig() {
-    dispatch(initRarReminder())
-  },
   getReminders(petId) {
     dispatch(getReminders(petId))
   }
@@ -37,19 +33,19 @@ class AddReminder extends Component {
     const { petId } = this.$router.params
     this.setState({ petId })
   }
-  componentDidMount() {
-    this.props.getConfig()
-  }
   onChange = debounce((attr, value) => {
     this.setState({
       [attr]: value
     })
   })
-  getPlanImg = (plan) => {
-    const pItem = this.props.selector.filter(item => item.value === plan)
-    let img = pItem.length ? pItem[0].img : reminder_default_img
-    this.setState({ img })
-    return img
+  handlePlanChange = ({ value, index }) => {
+    if (index === -1) {
+      this.setState({ img: reminder_default_img})
+      this.onChange('plan', value)
+    }else {
+      this.setState({ img: this.props.selector[index].img })
+      this.onChange('plan', this.props.selector[index].value)
+    }
   }
   onSubmit = async () => {
     const { petId, plan, nextTime, cycle, note, img } = this.state
@@ -76,7 +72,6 @@ class AddReminder extends Component {
     }
     let reminder = { petId, plan, nextTime, cycle, note, img }
     const res = await cloudAdapter('rar', 'addReminder', reminder)
-    console.log(res)
     if (res.code === 0) {
       // 直接返回并不会再次触发pet获取pets
       this.props.getReminders(petId)
@@ -96,15 +91,13 @@ class AddReminder extends Component {
             title="提醒事项"
             mode="rar"
             selector={selector}
-            onChange={(value) => {
-              this.onChange('plan', value)
-            }}
+            onChange={this.handlePlanChange}
           >
             <View className="part1-select">
               {
                 plan ? (
                   <View>
-                    <Image src={this.getPlanImg(plan)} />
+                    <Image src={img} />
                     <Text className="active">{plan}</Text>
                   </View>
                 ) : <Text>选择提醒事项</Text>
