@@ -24,12 +24,12 @@ class MyPickerView extends Component {
     }
   }
 
-  onChange = debounce(e => {
+  onChange = e => {
     const val = e.detail.value
     this.setState({
       value: val
     })
-  })
+  }
 
   render() {
     return (
