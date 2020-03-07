@@ -14,7 +14,6 @@ import MySwitch from '@components/switch'
 import { pet_avatar } from '@config'
 import { connect } from '@tarojs/redux'
 import * as createActions from '@actions/pet'
-import { initVariety } from '@actions/config'
 import './index.scss'
 
 @connect(({ config }) => ({
@@ -22,9 +21,6 @@ import './index.scss'
 }), (dispatch) => ({
   getPets() {
     dispatch(createActions.getPets())
-  },
-  getSelector() {
-    dispatch(initVariety())
   }
 }))
 class PetInfo extends PureComponent {
@@ -40,9 +36,6 @@ class PetInfo extends PureComponent {
     this.setState({
       ...pet
     })
-  }
-  componentDidMount() {
-    this.props.getSelector()
   }
   onChange = debounce((attr, value) => {
     this.setState({
