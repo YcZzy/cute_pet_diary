@@ -8,6 +8,7 @@ exports.getReminders =  async (db, petId) => {
 }
 
 exports.getReminder =  async (db, _id) => {
+  // where返回的是数组格式
   const res = await db.collection('CPD_pets_reminders').where({ _id }).get()
   return res ? res.data : []
 }
@@ -29,32 +30,36 @@ exports.updateReminder = async (db, reminder) => {
 }
 
 exports.getRecords =  async (db, petId) => {
-  const res = await db.collection('CPD_pets_records').where({
-    petId,
-    show: 1
-  }).get()
+  const $ = db.command.aggregate
+  const res = await db.collection('CPD_pets_records').aggregate().match({
+    petId
+  }).sort({
+    time: -1
+  }).end()
+  const { list } = await db.collection('CPD_pets_records').aggregate().match({
+    petId
+  }).group({
+    _id: '$name'
+  }).end()
   let records = []
-  if (res.data.length !== 0) {
-    records = res.data
+  if (res.list.length !== 0) {
+    let types = []
+    for(let i = 0; i < res.list.length && types.length < list.length; i++) {
+      if (!types.includes(res.list[i].name)) {
+        types.push(res.list[i].name)
+        records.push(res.list[i])
+      }
+    }
   }
   return records
 }
+exports.getRecord =  async (db, _id) => {
+  // doc返回的是对象格式
+  const res = await db.collection('CPD_pets_records').doc(_id).get()
+  return res.data
+}
 
 exports.addRecord = async (db, record) => {
-  const result = await db.collection('CPD_pets_records').where({
-    name: record.name,
-    petId: record.petId
-  }).get()
-  let res
-  record.show = 1
-  if (result.data.length) {
-    let [rItem] = result.data.filter(r => r.show === 1) // 第1项
-    await db.collection('CPD_pets_records').doc(rItem._id).update({
-      data: {
-        show: 0
-      }
-    })
-  }
   res = await db.collection('CPD_pets_records').add({
     data: record
   })
@@ -77,4 +82,9 @@ exports.deleteById= async (db, table, _id) => {
 exports.deleteByTitle = async (db, table, params) => {
   const res = await db.collection(table).where(params).remove()
   return res
+}
+
+exports.getRecordsByName = async (db, name) => {
+  const res = await db.collection('CPD_pets_records').where({ name }).get()
+  return res.data
 }

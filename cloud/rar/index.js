@@ -6,11 +6,13 @@ const {
   getReminders, 
   getReminder, 
   getRecords, 
+  getRecord,
   addRecord, 
   updateReminder,
   updateRecord,
   deleteById,
-  deleteByTitle
+  deleteByTitle,
+  getRecordsByName
 } = require('./db')
 
 cloud.init()
@@ -54,6 +56,12 @@ exports.main = async (event, context) => {
     ctx.body = { code: 0, data: res } 
     await next()
   })
+  app.router('getRecord', async (ctx, next) => {
+    let { _id } = event.params
+    const res = await getRecord(db, _id)
+    ctx.body = { code: 0, data: res } 
+    await next()
+  })
 
   app.router(['addRecord', 'updateRecord'], async (ctx, next) => {
     let record = event.params, res
@@ -67,8 +75,22 @@ exports.main = async (event, context) => {
   })
 
   app.router(['deleteReminder', 'deleteRecord'], async (ctx, next) => {
-    let { _id } = event.params, res
-    let table = event.$url === 'deleteReminder' ? 'CPD_pets_reminders' : 'CPD_pets_records'
+    let { _id } = event.params, res, table
+    if (event.$url === 'deleteReminder') {
+      table = 'CPD_pets_reminders'
+    }else {
+      table = 'CPD_pets_records'
+      // 删除照片
+      const result = await getRecord(db, _id)
+      if (result.pictures.length) {
+        await cloud.callFunction({
+          name: 'deleteFiles',
+          data: {
+            fileIDs: result.pictures
+          }
+        })
+      }
+    }
     res = await deleteById(db, table, _id)
     ctx.body = { code: 0, data: res } 
     await next()
@@ -82,6 +104,17 @@ exports.main = async (event, context) => {
     }else {
       table = 'CPD_pets_records'
       arg = 'name'
+      const result = await getRecordsByName(db, title)
+      for(let i = 0; i < result.length; i++) {
+        if (result[i].pictures.length) {
+          await cloud.callFunction({
+            name: 'deleteFiles',
+            data: {
+              fileIDs: result[i].pictures
+            }
+          })
+        }
+      }
     }
     res = await deleteByTitle(db, table, { petId, [arg]: title })
     ctx.body = { code: 0, data: res } 
