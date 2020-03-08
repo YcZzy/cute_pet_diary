@@ -12,7 +12,7 @@ import { cloudAdapter, upload } from '@utils/adapter'
 import MyPicker from '@components/picker'
 import { connect } from '@tarojs/redux'
 import { getRecords } from '@actions/rar'
-import { debounce, navigateBack } from '@utils/common'
+import { debounce, navigateBack, switchTime } from '@utils/common'
 import { record_default_img, record_picture } from '@config'
 import './index.scss'
 
@@ -46,7 +46,7 @@ class AddRecord extends Component {
   })
   handleRecordChange = ({ value, index }) => {
     if (index === -1) {
-      this.setState({ img: reminder_default_img})
+      this.setState({ img: record_default_img})
       this.onChange('name', value)
     }else {
       this.setState({ img: this.props.selector[index].img })
@@ -80,7 +80,8 @@ class AddRecord extends Component {
         return;
       }
     }
-    let record = { petId, name, img, time, note, pictures }
+    let record = { petId, name, img, time: time, note, pictures }
+    record.time = switchTime(time)
     const res = await cloudAdapter('rar', 'addRecord', record)
     // console.log(res)
     if (res.code === 0) {
