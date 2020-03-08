@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Picker } from '@tarojs/components'
 import { AtButton, AtForm, AtTextarea, AtMessage, AtIcon } from 'taro-ui'
-import { debounce, navigateBack } from '@utils/common'
+import { debounce, navigateBack, switchTime } from '@utils/common'
 import MyPicker from '@components/picker'
 import { connect } from '@tarojs/redux'
 import { reminder_default_img } from '@config'
@@ -71,6 +71,7 @@ class AddReminder extends Component {
       return;
     }
     let reminder = { petId, plan, nextTime, cycle, note, img }
+    reminder.nextTime = switchTime(nextTime)
     const res = await cloudAdapter('rar', 'addReminder', reminder)
     if (res.code === 0) {
       // 直接返回并不会再次触发pet获取pets
