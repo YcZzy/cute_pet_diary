@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Picker } from '@tarojs/components'
 import { AtButton, AtForm, AtTextarea, AtMessage, AtIcon } from 'taro-ui'
-import { debounce, navigateBack } from '@utils/common'
+import { debounce, navigateBack, switchTime } from '@utils/common'
 import MyPicker from '@components/picker'
 import { connect } from '@tarojs/redux'
 import { reminder_default_img } from '@config'
@@ -60,8 +60,11 @@ class EditReminder extends Component {
     }
   }
   onSubmit = async () => {
-    const { _id, petId, plan, nextTime, cycle, note, img } = this.state
+    let { _id, petId, plan, nextTime, cycle, note, img } = this.state
     let reminder = { _id, petId, plan, nextTime, cycle, note, img }
+    if (typeof nextTime === 'string') {
+      reminder.nextTime = switchTime(nextTime)
+    }
     const res = await cloudAdapter('rar', 'updateReminder', reminder)
     if (res.code === 0) {
       this.props.getReminders(petId)
@@ -106,8 +109,11 @@ class EditReminder extends Component {
             >
               <View className="next-time-select">
                 {
-                  nextTime ? <Text className="active">{nextTime}</Text>
-                    : <Text>选择提醒时间</Text>
+                  nextTime ? (
+                    <Text className="active">
+                      {typeof nextTime === 'string' ? nextTime : switchTime(nextTime)}
+                    </Text>
+                  ) : <Text>选择提醒时间</Text>
                 }
                 <AtIcon value="chevron-right" size="20" color="#ccc" />
               </View>
