@@ -17,6 +17,7 @@ const config = {
     '@store': path.resolve(__dirname, '..', 'src/store'),
     '@actions': path.resolve(__dirname, '..', 'src/actions'),
     '@assets': path.resolve(__dirname, '..', 'src/assets'),
+    '@config': path.resolve(__dirname, '..', 'src/config'),
   },
   babel: {
     sourceMap: true,
