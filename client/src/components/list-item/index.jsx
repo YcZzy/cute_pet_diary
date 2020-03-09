@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from "@tarojs/components"
 import { AtIcon, AtActionSheet, AtActionSheetItem } from "taro-ui"
-import { navigateTo } from '@utils/common'
+import { navigateTo, switchTime } from '@utils/common'
 import { cloudAdapter } from '@utils/adapter'
 import { connect } from '@tarojs/redux'
 import { getReminders, getRecords } from '@actions/rar'
@@ -55,7 +55,13 @@ class ListItem extends Component {
     const { img, cycle, note, title, time, pictures } = this.props
 
     return (
-      <View className="list-item">
+      <View 
+        className="list-item" 
+        onClick={() => {
+          if (cycle) return;
+          navigateTo('/pages/record-detail/index?name=' + title)
+        }}
+      >
         <View className="list-item-img">
           <Image src={img} />
         </View>
@@ -67,10 +73,10 @@ class ListItem extends Component {
             {
               cycle ? (
                 <Text className="time">
-                  {cycle}（下次提醒时间：{time}）
+                  {cycle}（下次提醒时间：{switchTime(time)}）
               </Text>
               ) : (
-                  <Text className="time">{time}</Text>
+                  <Text className="time">{switchTime(time)}</Text>
                 )
             }
             {
