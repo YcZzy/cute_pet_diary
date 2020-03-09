@@ -4,7 +4,7 @@ import { AtButton, AtForm, AtTextarea, AtMessage, AtIcon } from 'taro-ui'
 import { debounce, navigateBack, switchTime } from '@utils/common'
 import MyPicker from '@components/picker'
 import { connect } from '@tarojs/redux'
-import { reminder_default_img } from '@config'
+import { reminder_default_img, templateId } from '@config'
 import { cloudAdapter } from '@utils/adapter'
 import { getReminders } from '@actions/rar'
 import './index.scss'
@@ -78,6 +78,22 @@ class AddReminder extends Component {
       this.props.getReminders(petId)
       navigateBack('添加成功')
     }
+  }
+
+  auth = async () => {
+    // 只在点击事件或支付完成是能触发，直接form上的onSubmit无法调起
+    // 勾选不再提醒则无需再次授权
+    wx.requestSubscribeMessage({
+      tmplIds: [ templateId ],
+      success: (res) => {
+        if (res[templateId] !== 'reject') {
+          this.onSubmit()
+        }
+      },
+      fail(err) {
+        console.log(err)
+      }
+    })
   }
 
   render() {
@@ -157,7 +173,7 @@ class AddReminder extends Component {
             placeholder='填写备注...'
           />
         </View>
-        <AtButton formType='submit' type="primary" circle>提交</AtButton>
+        <AtButton onClick={this.auth} type="primary" circle>提交</AtButton>
         <AtMessage />
       </AtForm>
     )
