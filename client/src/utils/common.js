@@ -27,8 +27,8 @@ export const debounce = (fn, delay = 250) => {
 }
 
 // 获取 YYYY-MM-DD
-export const getYMD = () => {
-  let date = new Date().toLocaleDateString()
+export const getYMD = (time = new Date().getTime()) => {
+  let date = new Date(time).toLocaleDateString()
   let arr = date.split('/')
   if (arr[1].length === 1) {
     arr[1] = '0' + arr[1]
