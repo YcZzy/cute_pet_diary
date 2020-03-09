@@ -121,5 +121,12 @@ exports.main = async (event, context) => {
     await next()
   })
 
+  app.router('getRecordsByName', async (ctx, next) => {
+    let { name } = event.params
+    const res = await getRecordsByName(db, name)
+    ctx.body = { code: 0, data: res } 
+    await next()
+  })
+
   return app.serve()
 }
