@@ -1,10 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import { AtIcon, AtList } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import NotLogin from './notlogin'
-import { info } from './config'
+import { mine, other } from './config'
+import Item from './item'
 import { navigateTo } from '@utils/common'
+import avatar_default from '@assets/images/user.png'
 import './index.scss'
+
 
 @connect(({ mine }) => ({
   user: mine.user
@@ -16,39 +19,63 @@ class Mine extends Component {
     navigationBarTitleText: '个人中心'
   }
   render() {
-    const { user } = this.props
+    const { user, extraText } = this.props
     return (
-      <View>
-        {
+      <View className="mine">
+        <View
+          className="user common"
+          onClick={() => {
+            !user ? navigateTo('/pages/auth/index') : null
+          }}
+        >
+          <View className="avatar">
+            <Image src={user ? user.avatarUrl : avatar_default} />
+          </View>
+          <Text>{user ? user.nickName : '点击登录'}</Text>
+          {!user ? <AtIcon value="chevron-right" size={24} color="#ccc"/> : null}
+        </View>
+        <AtList hasBorder={false} className="common">
+          {
+            mine.map(item => (
+              <Item
+                title={item.title}
+                extraText={0}
+                icon={item.key}
+                url={item.url}
+                auth={item.auth}
+                user={user}
+                key={item.key}
+              />
+            ))
+          }
+        </AtList>
+        <AtList hasBorder={false} className="common">
+          {
+            other.map(item => (
+              <Item
+                title={item.title}
+                icon={item.key}
+                url={item.url}
+                auth={item.auth}
+                user={user}
+                key={item.key}
+              />
+            ))
+          }
+        </AtList>
+        {/* {
           user ? (
-            <View className="islogin">
-              <View className="islogin-header">
-                <View className="user">
-                  <View className="avatar">
-                    <Image src={user.avatarUrl} />
-                  </View>
-                  <Text>{user.nickName}</Text>
-                </View>
-                <View className="info">
-                  {
-                    info.map((item) => (
-                      <View
-                        className="info-item"
-                        onClick={() => { navigateTo(item.url) }}
-                        key={item.key}
-                      >
-                        <Text className="number">0</Text>
-                        <Text>{item.title}</Text>
-                      </View>
-                    ))
-                  }
-                </View>
-              </View>
+            <View
+              className="logout common"
+              onClick={() => {
+                !user ? navigateTo('/pages/auth/index') : null
+              }}
+            >
+              <AtIcon prefixClass="icon" value="logout" size={20} color="#333"/>
+              <Text>退出登录</Text>
             </View>
-          ) : (
-              <NotLogin />
-            )
-        }
+          ) : null
+        } */}
       </View>
     );
   }
