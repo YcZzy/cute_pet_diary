@@ -11,15 +11,15 @@ class RecordDetail extends Component {
     name: '',
     list: []
   }
-  componentWillMount() {
+  componentDidShow() {
     const { name } = this.$router.params
-    this.setState({ name })
+    this.setState({ name }, () => this.init())
     // 动态设置头部标题
     Taro.setNavigationBarTitle({
       title: name
     })
   }
-  async componentDidMount() {
+  init = async () => {
     const res = await cloudAdapter('rar', 'getRecordsByName', { name: this.state.name })
     if (res.code === 0) {
       this.setState({ list: res.data })
@@ -46,7 +46,7 @@ class RecordDetail extends Component {
   render() {
     const { name, list } = this.state
     return (
-      <View>
+      <View className="detail">
         {
           name === '体重' ? (
             <View className="line-chart">
@@ -54,20 +54,23 @@ class RecordDetail extends Component {
             </View>
           ) : null
         }
-        {
-          list.map(item => (
-            <ListItem
-              img={item.img}
-              note={item.note}
-              title={item.name}
-              time={item.time}
-              pictures={item.pictures}
-              _id={item._id}
-              petId={item.petId}
-              key={item._id}
-            />
-          ))
-        }
+        <View className="list">
+          {
+            list.map(item => (
+              <ListItem
+                img={item.img}
+                note={item.note}
+                title={item.name}
+                time={item.time}
+                pictures={item.pictures}
+                _id={item._id}
+                petId={item.petId}
+                key={item._id}
+                callback={this.init}
+              />
+            ))
+          }
+        </View>
       </View>
     );
   }
