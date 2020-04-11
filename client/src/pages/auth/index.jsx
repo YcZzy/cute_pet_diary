@@ -3,15 +3,19 @@ import { View, Text, Image } from '@tarojs/components'
 import logo from '@assets/images/auth_logo.png'
 import { AtIcon, AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import './index.scss'
 import { login } from '@actions/mine'
 import { navigateBack } from '@utils/common'
+import { cloudAdapter } from '@utils/adapter'
+import './index.scss'
 
 @connect(() => ({}), (dispatch) => ({
-  auth(e) {
+  async auth(e) {
     const user = e.detail.userInfo
-    dispatch(login(user))
-    navigateBack('授权成功')
+    const res = await cloudAdapter('mine', 'addUser', {user})
+    if (res.code === 0) {
+      dispatch(login(user))
+      navigateBack('授权成功')
+    }
   }
 }))
 class Auth extends Component {
