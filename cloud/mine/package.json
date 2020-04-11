@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "wx-server-sdk": "~1.8.2"
+    "wx-server-sdk": "~1.8.2",
+    "tcb-router": "^1.1.2"
   }
 }
