@@ -25,6 +25,22 @@ export const debounce = (fn, delay = 250) => {
     }, delay)
   }
 }
+export const throtte = (fn, delay = 250) => {
+  let timer = null
+  return (...arg) => {
+    if (timer) return;
+    timer = setTimeout(() => {
+      fn.apply(this, arg)
+      timer = null
+    }, delay)
+  }
+}
+export const angle = (start,end) =>{
+  var diff_x = end.x - start.x,
+      diff_y = end.y - start.y;
+  //返回角度,不是弧度
+  return 360*Math.atan(diff_y/diff_x)/(2*Math.PI);
+}
 
 // 获取 YYYY-MM-DD
 export const getYMD = (time = new Date().getTime()) => {
